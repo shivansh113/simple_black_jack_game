@@ -1,19 +1,26 @@
-let firstCard = getRandomCard()
-let secondCard = getRandomCard()
-let cards = [firstCard, secondCard]
-let sum = firstCard + secondCard
+let player = {
+    name: "Shivansh",
+    chips: 200
+}
+
+let sum = 0
+let cards = []
 let hasBlackJack = false;
-let isInGame = true
+let isInGame = false
 let message = ""
 let messageEl = document.getElementById("message-el")
 let sumEl = document.querySelector("#sum-el")
 let cardsEL =document.querySelector("#cards-el")
+let startbttntext = document.getElementById("game-start-bttn")
+let playerEl = document.getElementById("player-el")
+
+playerEl.textContent = player.name + ": $" + player.chips
 
 function getRandomCard() {
-    randNum = parseInt((Math.random() * 9) + 1)
+    randNum = parseInt((Math.random() * 10) + 1)
     let checkForAce = 0
     if (randNum == 1) {
-        if ((checkForAce += sum + randNum) > 21) {
+        if ((checkForAce += sum + 11) > 21) {
             return randNum
         } else {
             return 11;
@@ -23,10 +30,19 @@ function getRandomCard() {
 }
 
 function startGame() {
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards = [firstCard, secondCard]
+    sum = firstCard + secondCard
+    isInGame = true
+    
     renderGame();
 }
 
 function renderGame() {
+    if (isInGame) {
+        startbttntext.textContent = "Restart Game"
+    } 
     cardsEL.textContent = "Cards: "
     for (let i = 0; i < cards.length; i++) {
         cardsEL.textContent += cards[i] + " ";
@@ -38,20 +54,26 @@ function renderGame() {
         message = "Blackjack"
         hasBlackJack = true;
     } else {
-        message = "Bust"
-        isInGame = false;
+        message = "Bust. Best of Luck Next Time"
+        isInGame = false
+        
     }
     messageEl.textContent = message;
 }
 
 function newCardpull() {
-    let card = getRandomCard()
-    sum += card
-    cards.push(card)
-    renderGame()
+
+    if (isInGame && hasBlackJack === false) {
+        
+        let card = getRandomCard()
+        sum += card
+        cards.push(card)
+        renderGame()
+    } 
 }
 
-function aceCardFound() {
 
-}
+
+
+
 
